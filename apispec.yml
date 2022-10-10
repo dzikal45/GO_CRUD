@@ -1,0 +1,411 @@
+openapi: '3.0.2'
+info:
+  title: Student 
+  description: API spec for Student
+  version: '1.0'
+servers:
+  - url: https://localhost:3000/api
+paths:
+  /students:
+    get:
+      tags:
+      - Student API
+      description: List All Student
+      summary: List All Student
+      responses:
+        '200':
+          description: Success get all Student
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Student"
+    post:
+      tags:
+        - Student API
+      description: Create New Student
+      summary: Create New Student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        '200':
+          description: Success Create Student
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    items:
+                      $ref: "#/components/schemas/Student"
+  /student/{student_id}:
+    get:
+      tags:
+        - "Student API"
+      description: Get Student By student_id
+      summary: Get Student By student_id
+      parameters:
+        - name : student_id
+          in: path
+          description: student_id
+      responses:
+        '200':
+          description: Success get Student By student_id
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    code: 
+                      type: number
+                    status:
+                      type: string
+                    data:
+                      type: array
+                    items:
+                      $ref: "#/components/schemas/Student"
+    put:
+      tags:
+        - "Student API"
+      description: Update student By student_id
+      summary: Update student By student_id
+      parameters:
+        - name : student_id
+          in: path
+          description: student_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name :
+                  type : string
+                address:
+                  type: string
+      responses:
+        '200':
+          description: Success Update student By student_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Student"
+  /books:
+    get:
+      tags:
+        - "Book API"
+      description: List All Books
+      summary: List All Books
+      responses:
+        '200':
+          description: Success get all Book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Books"
+    post:
+      tags:
+        - "Book API"
+      description: Create New Book
+      summary: Create New Book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+               title: 
+                  type: string
+      responses:
+        '200':
+          description: Success Create New Book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    items:
+                      $ref: "#/components/schemas/Books"
+  /books/{book_id}:
+    get:
+      tags:
+        - "Book API"
+      description: Get Book By book_id
+      summary: Get Book By book_id
+      parameters:
+       - name : book_id
+         in: path
+         description: book_id
+      responses:
+        '200':
+          description: Success Get Book By book_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    code: 
+                      type: number
+                    status:
+                      type: string
+                    data:
+                      items:
+                        $ref: "#/components/schemas/Books"
+    put:
+      tags:
+        - "Book API"
+      description: Update Book By book_id
+      summary: Update Book By book_id
+      parameters:
+       - name : book_id
+         in: path
+         description: book_id
+      requestBody:
+        content:
+         application/json:
+            schema:
+              type: object
+              properties:
+               title: 
+                  type: string
+               available:
+                  type: number
+      responses:
+        '200':
+          description: Success Update Book By book_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    items:
+                      $ref: "#/components/schemas/Books"
+    delete:
+      tags:
+        - "Book API"
+      description: Delete Book By book_id
+      summary: Delete Book By book_id
+      parameters:
+       - name : book_id
+         in: path
+         description: book_id
+      requestBody:
+        content:
+         application/json:
+            schema:
+              type: object
+              properties:
+               title: 
+                  type: string
+               available:
+                  type: number
+      responses:
+        '200':
+          description: Success Update Book By book_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: number
+                  status:
+                    type: string
+  /borrows:
+    get:
+      tags:
+        - "Borrow API"
+      description: List All Borrowed Books
+      summary: List All Borrowed Books
+      responses:
+        '200':
+          description: Success List All Borrowed Books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type : string
+                  data:
+                    type: array
+                    items:
+                       $ref: "#/components/schemas/Borrows"
+    post:
+      tags:
+        - "Borrow API"
+      description: Create New Borrowed Book
+      summary: Create New Borrowed Book
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                book_name:
+                  type: string
+                due_date:
+                  type: string
+      responses:
+        '200':
+          description: Success List All Borrowed Books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type : string
+                  data:
+                    type: array
+                    items:
+                       $ref: "#/components/schemas/Borrows"
+  /borrow/{borrow_id}:
+    get: 
+      tags:
+        - "Borrow API"
+      description: Get Borrowed Book By book_id
+      summary: Get Borrowed Book By book_id
+      parameters:
+       - name : borrow_id
+         in: path
+         description: borrow_id
+      responses:
+        '200':
+          description: Success List All Borrowed Books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type : string
+                  data:
+                    type: array
+                    items:
+                       $ref: "#/components/schemas/Borrows"
+    put:
+        tags:
+        - "Borrow API"
+        description: Update Borrowed Book By book_id
+        summary: Update Borrowed Book By book_id
+        parameters:
+        - name : borrow_id
+          in: path
+          description: borrow_id
+        requestBody:
+          content:
+           application/json:
+            schema: 
+              type: object
+              properties:
+                status_request:
+                  type: string
+                returned_date:
+                  type: string
+                due_date:
+                  type: string             
+        responses:
+          '200':
+            description: Success List All Borrowed Books
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: number
+                    status:
+                      type : string
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Borrows"
+
+
+components:
+  schemas:
+    Borrows:
+      type: object
+      properties:
+        borrowed_id:
+          type: number
+        student_id:
+          type: number
+        book_name:
+          type: string
+        returned_date:
+          type: string
+        due_date:
+          type: string
+        
+    Books:
+      type: object
+      properties:
+        status_request:
+          type: string
+        book_id:
+          type: number
+        title:
+          type: string
+        available:
+          type: number
+    Student:
+      type: object
+      properties:
+        student_id:
+          type: number
+        email:
+          type: string
+        name:
+          type: string
+        address: 
+          type: string
+
