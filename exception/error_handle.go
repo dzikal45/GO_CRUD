@@ -60,8 +60,8 @@ func SomethingErrorHandler(writer http.ResponseWriter, request *http.Request, er
 			writer.WriteHeader(http.StatusNotFound)
 			webResponse := web.WebResponse{
 				Code:   http.StatusBadRequest,
-				Status: "BOOK IS BOOKED",
-				Data:   exception.BookIsBooked,
+				Status: "FOUND ERROR",
+				Data:   exception.somethingError,
 			}
 
 			helper.WriteToResponseBody(writer, webResponse)

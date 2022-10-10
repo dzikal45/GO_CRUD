@@ -32,7 +32,7 @@ func main() {
 	//borrowedBy
 
 	borrowedByRepository := repository.NewBorrowedByRepository()
-	borrowedByService := service.NewBorrowedService(borrowedByRepository, db, validate)
+	borrowedByService := service.NewBorrowedService(borrowedByRepository, bookRepository, db, validate)
 	borrowedByController := controller.NewBorrowedByController(borrowedByService)
 
 	router := app.NewRouter(studentController, bookController, borrowedByController)
@@ -43,4 +43,5 @@ func main() {
 	}
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
+
 }

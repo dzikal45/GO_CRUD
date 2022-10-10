@@ -26,13 +26,13 @@ func (repository *BookRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, book
 }
 
 func (repository *BookRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, book domain.Book) {
-	sql := "delete from book where  id = ?"
+	sql := "delete from book where  book_id = ?"
 	_, err := tx.ExecContext(ctx, sql, book.BookId)
 	helper.PanicIfError(err)
 }
 
 func (repository *BookRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, book domain.Book) domain.Book {
-	sql := "Update book set title = ? , available = ? where book_id = ?)"
+	sql := "Update book set title = ? , available = ? where book_id = ?"
 	_, err := tx.ExecContext(ctx, sql, book.Title, book.Available, book.BookId)
 	helper.PanicIfError(err)
 	return book
@@ -58,7 +58,7 @@ func (repository *BookRepositoryImpl) FindAll(ctx context.Context, db *sql.DB) [
 	rows, err := db.QueryContext(ctx, sql)
 	helper.PanicIfError(err)
 	defer rows.Close()
-	books := []domain.Book{}
+	var books []domain.Book
 	for rows.Next() {
 		book := domain.Book{}
 		err := rows.Scan(&book.BookId, &book.Title, &book.Available)

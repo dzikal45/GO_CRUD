@@ -2,5 +2,5 @@ package web
 
 type BookRequest struct {
 	Title     string `validate:"required"json:"title"`
-	Available int    `validate:"required"json:"available"`
+	Available int    `json:"available"`
 }

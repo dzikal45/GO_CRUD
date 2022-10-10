@@ -1,9 +1,9 @@
 package exception
 
 type SomethingError struct {
-	NotFoundError string
-	PasswordError string
-	BookIsBooked  string
+	NotFoundError  string
+	PasswordError  string
+	somethingError string
 }
 
 func NewNotFoundError(error string) SomethingError {
@@ -13,6 +13,6 @@ func NewNotFoundError(error string) SomethingError {
 func NewWrongPasswordError(error string) SomethingError {
 	return SomethingError{PasswordError: error}
 }
-func NewBookIsBooked(error string) SomethingError {
-	return SomethingError{BookIsBooked: error}
+func NewFoundError(error string) SomethingError {
+	return SomethingError{somethingError: error}
 }

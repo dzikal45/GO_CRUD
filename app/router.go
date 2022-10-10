@@ -19,16 +19,16 @@ func NewRouter(studentController controller.StudentController, bookController co
 	router.GET("/api/students/logout", middleware.VerifyToken(studentController.Logout))
 
 	//book
-	router.GET("/api/books", bookController.FindAll)
-	router.GET("/api/book/:book_id", bookController.FindById)
-	router.POST("/api/books", bookController.Create)
-	router.PUT("/api/book/:book_id", bookController.Update)
-	router.DELETE("/api/book/:book_id", bookController.Delete)
+	router.GET("/api/books", middleware.VerifyToken(bookController.FindAll))
+	router.GET("/api/book/:book_id", middleware.VerifyToken(bookController.FindById))
+	router.POST("/api/books", middleware.VerifyToken(bookController.Create))
+	router.PUT("/api/book/:book_id", middleware.VerifyToken(bookController.Update))
+	router.DELETE("/api/book/:book_id", middleware.VerifyToken(bookController.Delete))
 
 	//borrowedBy
-	router.GET("/api/borrows", borrowedBy.FindAll)
-	router.GET("/api/borrow/:borrow_id", borrowedBy.FindById)
-	router.POST("/api/borrows", borrowedBy.Create)
-	router.PUT("/api/borrow/:borrow_id", borrowedBy.Update)
+	router.GET("/api/borrows", middleware.VerifyToken(borrowedBy.FindAll))
+	router.GET("/api/borrow/:borrow_id", middleware.VerifyToken(borrowedBy.FindById))
+	router.POST("/api/borrows", middleware.VerifyToken(borrowedBy.Create))
+	router.PUT("/api/borrow/:borrow_id", middleware.VerifyToken(borrowedBy.Update))
 	return router
 }

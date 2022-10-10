@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"GO-CRUD/exception"
 	"GO-CRUD/helper"
 	"GO-CRUD/model/web"
 	"GO-CRUD/service"
@@ -22,14 +21,11 @@ func NewBorrowedByController(borrowedBy service.BorrowedService) BorrowedByContr
 }
 func (controller *BorrowedByControllerImpl) Create(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	borrowedCreateRequest := web.BorrowedByRequest{}
-	helper.ReadFromRequestBody(r, borrowedCreateRequest)
+	helper.ReadFromRequestBody(r, &borrowedCreateRequest)
 	studentId := r.Context().Value("student_id")
 	borrowedCreateRequest.StudentId = studentId.(int)
 
-	borrowedResponse, err := controller.BorrowedBy.Create(r.Context(), borrowedCreateRequest)
-	if err != nil {
-		panic(exception.NewBookIsBooked(err.Error()))
-	}
+	borrowedResponse := controller.BorrowedBy.Create(r.Context(), borrowedCreateRequest)
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
@@ -40,7 +36,11 @@ func (controller *BorrowedByControllerImpl) Create(w http.ResponseWriter, r *htt
 
 func (controller *BorrowedByControllerImpl) Update(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	borrowedUpdateRequest := web.BorrowedByUpdateRequest{}
-	helper.ReadFromRequestBody(r, borrowedUpdateRequest)
+	helper.ReadFromRequestBody(r, &borrowedUpdateRequest)
+	borrowedId := p.ByName("borrow_id")
+	id, err := strconv.Atoi(borrowedId)
+	helper.PanicIfError(err)
+	borrowedUpdateRequest.BorrowedId = id
 
 	borrowedResponse := controller.BorrowedBy.Update(r.Context(), borrowedUpdateRequest)
 	webResponse := web.WebResponse{
@@ -52,7 +52,7 @@ func (controller *BorrowedByControllerImpl) Update(w http.ResponseWriter, r *htt
 }
 
 func (controller *BorrowedByControllerImpl) FindById(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	borrowedId := p.ByName("book_id")
+	borrowedId := p.ByName("borrow_id")
 	id, err := strconv.Atoi(borrowedId)
 	helper.PanicIfError(err)
 	borrowedResponse := controller.BorrowedBy.FindById(r.Context(), id)

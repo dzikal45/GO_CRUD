@@ -22,7 +22,8 @@ func NewBookController(bookService service.BookService) BookController {
 
 func (controller *BookControllerImpl) Create(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	bookCreateRequest := web.BookRequest{}
-	helper.ReadFromRequestBody(r, bookCreateRequest)
+	helper.ReadFromRequestBody(r, &bookCreateRequest)
+	bookCreateRequest.Available = 1
 	bookResponse := controller.BookService.Create(r.Context(), bookCreateRequest)
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -37,8 +38,8 @@ func (controller *BookControllerImpl) Delete(w http.ResponseWriter, r *http.Requ
 	id, err := strconv.Atoi(bookId)
 	helper.PanicIfError(err)
 
-	err = controller.BookService.Delete(r.Context(), id)
-	helper.PanicIfError(err)
+	controller.BookService.Delete(r.Context(), id)
+
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
@@ -48,7 +49,7 @@ func (controller *BookControllerImpl) Delete(w http.ResponseWriter, r *http.Requ
 
 func (controller *BookControllerImpl) Update(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	bookUpdateRequest := web.BookUpdateRequest{}
-	helper.ReadFromRequestBody(r, bookUpdateRequest)
+	helper.ReadFromRequestBody(r, &bookUpdateRequest)
 
 	bookId := p.ByName("book_id")
 	id, err := strconv.Atoi(bookId)

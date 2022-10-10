@@ -1,6 +1,7 @@
 package service
 
 import (
+	"GO-CRUD/exception"
 	"GO-CRUD/helper"
 	"GO-CRUD/model/domain"
 	"GO-CRUD/model/web"
@@ -29,7 +30,6 @@ func NewBookservice(bookRepository repository.BookRepository, DB *sql.DB, valida
 func (service *BookServiceImpl) Create(ctx context.Context, request web.BookRequest) web.BookResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
-
 	tx, err := service.DB.Begin() // transaction db
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
@@ -50,26 +50,33 @@ func (service *BookServiceImpl) Update(ctx context.Context, request web.BookUpda
 	defer helper.CommitOrRollback(tx)
 
 	book, err := service.BookRepository.FindById(ctx, db, request.BookId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+	if book.Available == 0 {
+		message := errors.New("book is booked by someone cannot Update book")
+		panic(exception.NewFoundError(message.Error()))
+	}
 	book.Title = request.Title
-	book.Available = request.Available
 	service.BookRepository.Update(ctx, tx, book)
 
 	return helper.ToCategoryResponseBook(book)
 }
 
-func (service *BookServiceImpl) Delete(ctx context.Context, BookId int) error {
+func (service *BookServiceImpl) Delete(ctx context.Context, BookId int) {
 	db := service.DB
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 	book, err := service.BookRepository.FindById(ctx, db, BookId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 	if book.Available == 0 {
-		return errors.New("book is booked by someone cannot delete book")
+		message := errors.New("book is booked by someone cannot delete book")
+		panic(exception.NewFoundError(message.Error()))
 	}
 	service.BookRepository.Delete(ctx, tx, book)
-	return nil
 
 }
 
@@ -77,7 +84,9 @@ func (service *BookServiceImpl) FindById(ctx context.Context, BookId int) web.Bo
 	db := service.DB
 
 	book, err := service.BookRepository.FindById(ctx, db, BookId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 	return helper.ToCategoryResponseBook(book)
 }
 

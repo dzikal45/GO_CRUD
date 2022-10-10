@@ -27,13 +27,15 @@ func VerifyToken(next httprouter.Handle) httprouter.Handle {
 			})
 			if err != nil {
 				helper.Unauthorized(w)
-			}
-			if !token.Valid {
+			} else if !token.Valid {
+
 				helper.Unauthorized(w)
+			} else {
+
+				ctx := context.WithValue(r.Context(), "student_id", claims.StudentId)
+				next(w, r.WithContext(ctx), p)
 			}
 
-			ctx := context.WithValue(r.Context(), "student_id", claims.StudentId)
-			next(w, r.WithContext(ctx), p)
 		}
 	}
 }

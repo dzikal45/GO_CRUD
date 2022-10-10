@@ -51,18 +51,17 @@ paths:
                   status:
                     type: string
                   data:
-                    items:
                       $ref: "#/components/schemas/Student"
-  /student/{student_id}:
+  /student/{student_name}:
     get:
       tags:
         - "Student API"
       description: Get Student By student_id
       summary: Get Student By student_id
       parameters:
-        - name : student_id
+        - name : student_name
           in: path
-          description: student_id
+          description: student_name
       responses:
         '200':
           description: Success get Student By student_id
@@ -85,9 +84,9 @@ paths:
       description: Update student By student_id
       summary: Update student By student_id
       parameters:
-        - name : student_id
+        - name : student_name
           in: path
-          description: student_id
+          description: student_name
       requestBody:
         content:
           application/json:
@@ -160,7 +159,6 @@ paths:
                   status:
                     type: string
                   data:
-                    items:
                       $ref: "#/components/schemas/Books"
   /books/{book_id}:
     get:
@@ -185,7 +183,6 @@ paths:
                     status:
                       type: string
                     data:
-                      items:
                         $ref: "#/components/schemas/Books"
     put:
       tags:
@@ -219,7 +216,6 @@ paths:
                   status:
                     type: string
                   data:
-                    items:
                       $ref: "#/components/schemas/Books"
     delete:
       tags:
@@ -285,8 +281,13 @@ paths:
             schema: 
               type: object
               properties:
-                book_name:
-                  type: string
+                book:
+                  type: object
+                  properties:
+                    book_id:
+                      type : number
+                    title:
+                      type: string
                 due_date:
                   type: string
       responses:
@@ -302,9 +303,7 @@ paths:
                   status:
                     type : string
                   data:
-                    type: array
-                    items:
-                       $ref: "#/components/schemas/Borrows"
+                    $ref: "#/components/schemas/Borrows"
   /borrow/{borrow_id}:
     get: 
       tags:
@@ -328,8 +327,6 @@ paths:
                   status:
                     type : string
                   data:
-                    type: array
-                    items:
                        $ref: "#/components/schemas/Borrows"
     put:
         tags:
@@ -346,6 +343,8 @@ paths:
             schema: 
               type: object
               properties:
+                book_id:
+                  type: number
                 status_request:
                   type: string
                 returned_date:
@@ -365,8 +364,6 @@ paths:
                     status:
                       type : string
                     data:
-                      type: array
-                      items:
                         $ref: "#/components/schemas/Borrows"
 
 
@@ -379,6 +376,10 @@ components:
           type: number
         student_id:
           type: number
+        book_id:
+          type: number
+        status_request:
+          type: string
         book_name:
           type: string
         returned_date:
@@ -389,8 +390,6 @@ components:
     Books:
       type: object
       properties:
-        status_request:
-          type: string
         book_id:
           type: number
         title:
