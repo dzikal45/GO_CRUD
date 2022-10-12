@@ -7,9 +7,10 @@ import (
 
 func ToCategoryResponseUser(student domain.Student) web.StudentResponse {
 	return web.StudentResponse{
-		Name:    student.Name,
-		Email:   student.Email,
-		Address: student.Address,
+		StudentId: student.StudentId,
+		Name:      student.Name,
+		Email:     student.Email,
+		Address:   student.Address,
 	}
 }
 func ToCategoryResponsesUser(students []domain.Student) []web.StudentResponse {

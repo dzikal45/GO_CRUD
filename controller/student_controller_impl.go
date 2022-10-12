@@ -5,6 +5,7 @@ import (
 	"GO-CRUD/model/web"
 	"GO-CRUD/service"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -82,8 +83,9 @@ func (controller *StudentControllerImpl) Update(w http.ResponseWriter, r *http.R
 }
 
 func (controller *StudentControllerImpl) FindById(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	studentId := r.Context().Value("student_id")
-	id := studentId.(int)
+	studentId := p.ByName("student_id")
+	id, err := strconv.Atoi(studentId)
+	helper.PanicIfError(err)
 	studentResponse := controller.StudentService.FindById(r.Context(), id)
 	webResponse := web.WebResponse{
 		Code:   200,

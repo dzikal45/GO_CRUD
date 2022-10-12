@@ -12,7 +12,7 @@ func NewRouter(studentController controller.StudentController, bookController co
 
 	//student
 	router.GET("/api/students", middleware.VerifyToken(studentController.FindAll))
-	router.GET("/api/student/:student_name", middleware.VerifyToken(studentController.FindById))
+	router.GET("/api/student/:student_id", middleware.VerifyToken(studentController.FindById))
 	router.POST("/api/student/register", studentController.Register)
 	router.GET("/api/students/login", studentController.Login)
 	router.PUT("/api/student/:student_name", middleware.VerifyToken(studentController.Update))

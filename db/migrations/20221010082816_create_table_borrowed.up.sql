@@ -8,6 +8,6 @@ CREATE TABLE borrowed
     due_date DATE NOT NULL ,
     return_date DATE ,
     PRIMARY KEY(borrowed_id),
-    FOREIGN KEY(student_id) REFERENCES student(student_id)   ON DELETE CASCADE,
-    FOREIGN KEY(book_id) REFERENCES book(book_id)   ON DELETE CASCADE
+    FOREIGN KEY student_id_fk (student_id) REFERENCES student(student_id)   ON DELETE CASCADE,
+    FOREIGN KEY book_id_fk (book_id) REFERENCES book(book_id)   ON DELETE CASCADE
 )ENGINE = InnoDB;

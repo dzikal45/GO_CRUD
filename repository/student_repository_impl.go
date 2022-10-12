@@ -65,14 +65,14 @@ func (repository *StudentRepositoryImpl) FindByEmail(ctx context.Context, db *sq
 }
 
 func (repository *StudentRepositoryImpl) FindAll(ctx context.Context, db *sql.DB) []domain.Student {
-	sql := "select name,email,address from student"
+	sql := "select student_id,name,email,address from student"
 	rows, err := db.QueryContext(ctx, sql)
 	helper.PanicIfError(err)
 	defer rows.Close()
 	var students []domain.Student
 	for rows.Next() {
 		student := domain.Student{}
-		err := rows.Scan(&student.Name, &student.Email, &student.Address)
+		err := rows.Scan(&student.StudentId, &student.Name, &student.Email, &student.Address)
 		helper.PanicIfError(err)
 		students = append(students, student)
 	}
